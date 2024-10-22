@@ -23,5 +23,5 @@ jobs:
         with:
           body_path: publish/release.md
           files: publish/*.zip
-          tag_name: main
-  
+          tag_name: latest
+          make_latest: true
