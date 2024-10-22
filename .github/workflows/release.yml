@@ -1,0 +1,15 @@
+name: Release
+permissions:
+  contents: read
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun run archive
+      - run: bun run .github/workflows/release.ts
+      # - run: bun install github:tangibleinc/pipeline
+      # - run: bun run node_modules/@tangible/pipeline/index.ts

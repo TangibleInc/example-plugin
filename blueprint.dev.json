@@ -1,0 +1,17 @@
+{
+  "landingPage": "/wp-admin/options-general.php?page=example-plugin-settings",
+  "steps": [
+    {
+      "step": "defineWpConfigConsts",
+      "consts": {
+          "WP_DEBUG": true
+      },
+      "method": "rewrite-wp-config"
+    },
+    {
+      "step": "activatePlugin",
+      "pluginName": "E2E",
+      "pluginPath": "/var/www/html/wp-content/plugins/e2e-plugin"
+    }
+  ]
+}

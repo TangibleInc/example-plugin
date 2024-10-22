@@ -1,0 +1,16 @@
+# See https://github.com/tangibleinc/pipeline
+image: php:8.1-fpm
+pipelines:
+  # On every commit
+  default:
+    - step:
+        script:
+          # - curl -sL "https://raw.githubusercontent.com/tangibleinc/pipeline/main/run" | bash
+          - bash run
+  # On every version tag
+  tags:
+    "*":
+      - step:
+          script:
+            # - curl -sL "https://raw.githubusercontent.com/tangibleinc/pipeline/main/run" | bash
+          - bash run

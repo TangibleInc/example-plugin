@@ -1,0 +1,30 @@
+{
+  "name": "example-plugin",
+  "description": "Description of example plugin",
+  "version": "0.0.1",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tangibleinc/example-plugin.git"
+  },
+  "scripts": {
+    "start": "concurrently --raw 'roll dev' 'wp-now start --blueprint=blueprint.dev.json'",
+    "dev": "roll dev",
+    "build": "roll build",
+    "format": "roll format",
+    "postinstall": "roll install",
+    "update": "roll update",
+    "archive": "roll archive",
+    "-- End-to-end testing --": "https://playwright.dev/",
+    "e2e": "playwright test --config tests/e2e/playwright.config.js",
+    "e2e:install": "playwright install chromium",
+    "e2e:debug": "npm run e2e -- --debug",
+    "e2e:ui": "npm run e2e -- --ui"
+  },
+  "dependencies": { "@playwright/test": "^1.48.1", "@wordpress/e2e-test-utils-playwright": "^1.10.0" },
+  "devDependencies": {
+    "@tangible/now": "^1.1.3",
+    "@tangible/roller": "^2.1.2",
+    "concurrently": "^9.0.1"
+  }
+}

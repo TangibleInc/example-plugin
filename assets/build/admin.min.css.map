@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/admin.scss"],"names":[],"mappings":"AAEA;EACE,kBAAA;EACA,mBAAA;AADF;;AAIA;EACE,UAAA;EACA,qBAAA;EACA,oBAAA;AADF","file":"admin.min.css","sourcesContent":["// For plugin settings page\n\n.plugin-title {\n  position: relative;\n  margin-bottom: 16px;\n}\n\n.plugin-logo {\n  padding: 0;\n  margin-right: .25rem;\n  margin-bottom: -12px;\n}\n"]}
