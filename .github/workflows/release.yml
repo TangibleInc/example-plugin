@@ -21,5 +21,5 @@ jobs:
         with:
           body_path: publish/release.md
           files: publish/*.zip
-          tag_name: ${{ env.GITDATE }}
+          tag_name: ${{ env.GITHUB_REF_NAME }}
   
