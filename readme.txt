@@ -19,7 +19,7 @@ Testing 123
 
 == Changelog ==
 
-= 0.0.2 =
+= 0.0.3 =
 
 Release Date: 2024-01-01
 
