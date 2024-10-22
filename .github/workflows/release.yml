@@ -21,6 +21,7 @@ jobs:
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         with:
           body_path: publish/release.md
+          generate_release_notes: true
           files: publish/*.zip
       - name: Add latest tag as needed
         uses: EndBug/latest-tag@latest
@@ -30,6 +31,7 @@ jobs:
         if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         with:
           body_path: publish/release.md
+          generate_release_notes: true
           files: publish/*.zip
           tag_name: latest
           make_latest: true
