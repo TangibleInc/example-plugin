@@ -1,6 +1,8 @@
 name: Release
 permissions:
+  contents: read
   contents: write
+  id-token: write
 on: push
 jobs:
   build:
