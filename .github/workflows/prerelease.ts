@@ -1,17 +1,11 @@
 import path from 'node:path'
 import fs from 'node:fs/promises'
-
-function slugify(str: string) {
-  return String(str)
-    .normalize('NFKD') // split accented characters into their base characters and diacritical marks
-    .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
-    .trim() // trim leading or trailing whitespace
-    .toLowerCase() // convert to lowercase
-    .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
-    .replace(/\s+/g, '-') // replace spaces with hyphens
-    .replace(/-+/g, '-'); // remove consecutive hyphens
-}
-
+/**
+ * Prepare release
+ * 
+ * - Rename zip file based on version tag or branch name
+ * - Create release notes
+ */
 async function main() {
   console.log('Prepare release')
 
@@ -19,10 +13,7 @@ async function main() {
   const publishPath = path.join(projectPath, 'publish')
 
   /**
-   * - GitHub default environment variables
-   *   https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables
-   * - GitHub Action: Uploading release assets
-   *   https://github.com/softprops/action-gh-release?tab=readme-ov-file#%EF%B8%8F-uploading-release-assets
+   * [GitHub default environment variables](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables)
    */
 
   const {
@@ -64,6 +55,8 @@ async function main() {
     await fs.writeFile(releaseTextPath, text)
   }
 
+  // Tag
+
   if (eventType === 'tag') {
     const tag = gitRefName
     console.log('Release on tag', tag)
@@ -87,6 +80,8 @@ async function main() {
 
   const branch = gitRefName
 
+  // Main/master branch
+
   if (branch === 'main' || branch === 'master') {
 
     console.log('Release preview on main/master branch')
@@ -103,6 +98,8 @@ async function main() {
     return
   }
 
+  // Feature branch
+
   console.log('Release preview on branch', branch)
 
   // `{plugin}-{branch}-latest.zip`
@@ -116,6 +113,17 @@ async function main() {
   console.log('Target zip file', targetZipPath)
   await fs.rename(sourceZipPath, targetZipPath)
 
+}
+
+function slugify(str: string) {
+  return String(str)
+    .normalize('NFKD') // split accented characters into their base characters and diacritical marks
+    .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
+    .trim() // trim leading or trailing whitespace
+    .toLowerCase() // convert to lowercase
+    .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
+    .replace(/\s+/g, '-') // replace spaces with hyphens
+    .replace(/-+/g, '-'); // remove consecutive hyphens
 }
 
 main()
