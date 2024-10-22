@@ -6,13 +6,9 @@ pipelines:
     - step:
         script:
           - curl -sL "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/tangibleinc/tangible-pipeline-v3/downloads/run" | bash
-          # - curl -sL "https://raw.githubusercontent.com/tangibleinc/pipeline/main/run" | bash
-          # - bash run
   # On every version tag
   tags:
     "*":
       - step:
           script:
             - curl -sL "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/tangibleinc/tangible-pipeline-v3/downloads/run" | bash
-            # - curl -sL "https://raw.githubusercontent.com/tangibleinc/pipeline/main/run" | bash
-            # - bash run
