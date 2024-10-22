@@ -44,7 +44,7 @@ async function main() {
 
   // Source zip file
 
-  const config = await import('../../tangible.config.js')
+  const config = (await import('../../tangible.config.js')).default
 
   const zipFileName = `${config.archive.root}.zip`
   const sourceZipPath = path.join(publishPath, zipFileName)
