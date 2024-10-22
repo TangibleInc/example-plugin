@@ -10,7 +10,9 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bun run archive -y
-      - run: ls -lA
-      - run: bun run .github/workflows/release.ts
-      # - run: bun install github:tangibleinc/pipeline
-      # - run: bun run node_modules/@tangible/pipeline/index.ts
+      - run: bun run .github/workflows/prerelease.ts
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: publish/release.md
+          files: publish/*.zip

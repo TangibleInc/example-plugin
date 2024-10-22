@@ -25,7 +25,7 @@ export default {
     '*.{php,js,json}'
   ],
   archive: {
-    root: 'example-plugin',
+    root: 'tangible-example-plugin',
     src: [
       '*.php',
       'assets/**',
