@@ -11,21 +11,9 @@ jobs:
       - run: bun install
       - run: bun run archive -y
       - run: bun run .github/workflows/prerelease.ts
-      - name: Bump version and push tag
-        id: bump
-        uses: anothrNick/github-tag-action@v1
-        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: false
       - uses: softprops/action-gh-release@v2
-        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         with:
           body_path: publish/release.md
           files: publish/*.zip
-          tag_name: ${{ steps.bump.outputs.new_tag }}
-      - uses: softprops/action-gh-release@v2
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-        with:
-          body_path: publish/release.md
-          files: publish/*.zip
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && env.GITHUB_REF_NAME || env.GITDATE }}
+  
