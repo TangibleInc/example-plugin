@@ -14,11 +14,12 @@ jobs:
         run: bun install
       - name: Create archive
         run: bun run archive -y
-      # - name: Install pipeline
-      #   run: git clone https://tangibleinc/pipeline
+      - run: mkdir -p publish
+      - name: Install pipeline
+        run: cd publish && git clone https://tangibleinc/pipeline
       - name: Before release script
-        run: bun run .github/workflows/before-release.ts
-        # run: bun run node_modules/@tangible/pipeline/before-release.ts
+        # run: bun run .github/workflows/before-release.ts
+        run: bun run publish/pipeline/before-release.ts
       - name: Release tag
         uses: softprops/action-gh-release@v2
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -37,5 +38,5 @@ jobs:
           tag_name: latest
           make_latest: true
       - name: After release script
-        run: bun run .github/workflows/after-release.ts
-        # run: bun run node_modules/@tangible/pipeline/after-release.ts
+        # run: bun run .github/workflows/after-release.ts
+        run: bun run publish/pipeline/after-release.ts
