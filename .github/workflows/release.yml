@@ -14,12 +14,12 @@ jobs:
       - name: Bump version and push tag
         id: bump
         uses: anothrNick/github-tag-action@v1
-        if: !startsWith(github.ref, 'refs/tags/')
+        if: ! startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
       - uses: softprops/action-gh-release@v2
-        if: !startsWith(github.ref, 'refs/tags/')
+        if: ! startsWith(github.ref, 'refs/tags/')
         with:
           body_path: publish/release.md
           files: publish/*.zip
