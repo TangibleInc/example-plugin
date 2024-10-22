@@ -19,7 +19,7 @@ Description of example plugin
 
 == Changelog ==
 
-= 0.0.1 =
+= 0.0.2 =
 
 Release Date: 2024-01-01
 
