@@ -109,7 +109,7 @@ main() {
 
     if [ ! -z "$HAS_ARCHIVE" ]; then
       echo -e "\n..Creating zip archive: $ARCHIVE_FOLDER_NAME \n"
-      npm run archive
+      npx roll archive -y
       ZIP_FILE_CREATED=$(pwd)/publish/${ARCHIVE_FOLDER_NAME}.zip
     fi
   fi
