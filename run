@@ -232,10 +232,7 @@ main() {
   command="rsync -vrltz lib/ ${DEPLOY_USER}@${DEPLOY_HOST}:$DEPLOY_ROOT_PATH"
   echo $command && eval "$command"
 
-  # Include metadata in the folder
-  #cat $DEPLOY_META_FILE > $PROJECT_SLUG/deploy-meta.json
-
-  command="rsync -vrltz --delete --exclude=.git --exclude=node_modules --exclude=bitbucket-pipelines.yml $PROJECT_SLUG/ ${DEPLOY_USER}@${DEPLOY_HOST}:$DEPLOY_FULL_PATH"
+  command="rsync -vrltz --delete --exclude=publish --exclude=node_modules --exclude=bitbucket-pipelines.yml $PROJECT_SLUG/ ${DEPLOY_USER}@${DEPLOY_HOST}:$DEPLOY_FULL_PATH"
 
   echo $command && eval "$command"
 
@@ -254,6 +251,37 @@ main() {
     command="scp $ZIP_FILE ${DEPLOY_USER}@${DEPLOY_HOST}:apps/${UPDATE_SERVER_DOMAIN}/packages/${PROJECT_SLUG}.zip"
     echo $command && eval "$command"
   fi
+
+
+  # Deploy metadata
+
+  echo -e "\nDeploy metadata\n"
+
+  local DEPLOY_META_FILE=deploy-meta.json
+  # Timestamp in UTC
+  local DEPLOY_TIMESTAMP=$(date -u "+%Y-%m-%d %H:%M:%S")
+
+  local EVENT_KEY
+  local EVENT_VALUE
+
+  if [ ! -z "${BITBUCKET_TAG-}" ]; then
+    EVENT_KEY=tag
+    EVENT_VALUE=$BITBUCKET_TAG
+  else
+    EVENT_KEY=commit
+    EVENT_VALUE=$BITBUCKET_BRANCH
+  fi
+
+  local SOURCE_URL=https://bitbucket.org/tangibleinc/"$BITBUCKET_REPO_SLUG"
+  local TARGET_URL=https://log.tangible.one
+
+  printf '{ "type": "git", "source": "%s", "timestamp": "%s", "%s": "%s" }' "$SOURCE_URL" "$DEPLOY_TIMESTAMP" "$EVENT_KEY" "$EVENT_VALUE" > $DEPLOY_META_FILE
+
+  cat $DEPLOY_META_FILE
+
+  curl --header "Content-Type: application/json" --request POST --data "@$DEPLOY_META_FILE" $TARGET_URL || true
+
+  echo -e "\nAll done"
 
 }
 
