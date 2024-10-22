@@ -15,7 +15,7 @@ main() {
 
   echo -e "\n..Installing commands\n"
   apt update
-  apt-get install -y git ssh rsync zip nodejs
+  apt-get install -y git ssh rsync zip nodejs npm
 
   echo -e "\n..Setting up SSH"
 
