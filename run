@@ -105,7 +105,7 @@ main() {
     echo -e "\n..Installing NPM dependencies\n"
     npm install
 
-    HAS_ARCHIVE=$(node -e "const pkg = require('./build/package.json'); console.log((pkg && pkg.scripts && pkg.scripts.archive) || '')")
+    HAS_ARCHIVE=$(node -e "const pkg = require('./package.json'); console.log((pkg && pkg.scripts && pkg.scripts.archive) || '')")
 
     if [ ! -z "$HAS_ARCHIVE" ]; then
       echo -e "\n..Creating zip archive: $ARCHIVE_FOLDER_NAME \n"
