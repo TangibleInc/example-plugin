@@ -11,8 +11,10 @@ jobs:
       - run: bun install
       - run: bun run archive -y
       - run: bun run .github/workflows/prerelease.ts
-      - name: Release
-        uses: softprops/action-gh-release@v2
+      - name: Check if Git tag exists
+        id: check_tag
+        run: echo "::set-output name=TAG::$(git tag --points-at ${{github.sha}})"
+      - uses: softprops/action-gh-release@v2
         with:
           body_path: publish/release.md
           files: publish/*.zip
