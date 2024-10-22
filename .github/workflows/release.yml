@@ -12,8 +12,14 @@ jobs:
       - run: bun run archive -y
       - run: bun run .github/workflows/prerelease.ts
       - uses: softprops/action-gh-release@v2
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
         with:
           body_path: publish/release.md
           files: publish/*.zip
-          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && env.GITHUB_REF_NAME || env.GITDATE }}
+      - uses: softprops/action-gh-release@v2
+        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
+        with:
+          body_path: publish/release.md
+          files: publish/*.zip
+          tag_name: ${{ env.GITDATE }}
   
