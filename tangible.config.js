@@ -66,11 +66,11 @@ export default {
   installDev: [
     // {
     //   zip: 'https://downloads.wordpress.org/plugin/example.latest-stable.zip',
-    //   dest: 'vendor/tangible-dev/example'
+    //   dest: 'vendor/tangible-dev/example-zip'
     // },
     // {
     //   git: 'git@github.com:tangibleinc/example',
-    //   dest: 'vendor/tangible-dev/example',
+    //   dest: 'vendor/tangible-dev/example-git',
     //   branch: 'main',
     // },
   ]
