@@ -11,15 +11,17 @@ jobs:
       - run: bun install
       - run: bun run archive -y
       - run: bun run .github/workflows/prerelease.ts
-      - uses: softprops/action-gh-release@v2
+      - name: Release tag
+        uses: softprops/action-gh-release@v2
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
         with:
           body_path: publish/release.md
           files: publish/*.zip
-      - uses: softprops/action-gh-release@v2
+      - name: Release commit
+        uses: softprops/action-gh-release@v2
         if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
         with:
           body_path: publish/release.md
           files: publish/*.zip
-          tag_name: ${{ env.GITHUB_REF_NAME }}
+          tag_name: main
   
