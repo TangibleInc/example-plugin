@@ -275,9 +275,12 @@ main() {
   local SOURCE_URL=https://bitbucket.org/tangibleinc/"$BITBUCKET_REPO_SLUG"
   local TARGET_URL=https://log.tangible.one
 
-  printf '{ "type": "git", "source": "%s", "timestamp": "%s", "%s": "%s" }' "$SOURCE_URL" "$DEPLOY_TIMESTAMP" "$EVENT_KEY" "$EVENT_VALUE" > $DEPLOY_META_FILE
+  printf '{ "type": "git", "source": "%s", "time": "%s", "%s": "%s" }' "$SOURCE_URL" "$DEPLOY_TIMESTAMP" "$EVENT_KEY" "$EVENT_VALUE" > $DEPLOY_META_FILE
+
+  echo -e "\nPost event to $TARGET_URL\n"
 
   cat $DEPLOY_META_FILE
+  echo
 
   curl --header "Content-Type: application/json" --request POST --data "@$DEPLOY_META_FILE" $TARGET_URL || true
 

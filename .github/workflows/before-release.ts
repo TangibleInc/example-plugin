@@ -1,41 +1,44 @@
 import path from 'node:path'
 import fs from 'node:fs/promises'
+import { getEventMeta } from './common'
+
 /**
  * Prepare release
- * 
+ *
  * - Rename zip file based on version tag or branch name
- * - Create release notes
+ * - TODO: Create release notes from commit messages
  */
 async function main() {
   console.log('Prepare release')
 
   const projectPath = process.cwd()
   const publishPath = path.join(projectPath, 'publish')
+  const configPath = path.join(projectPath, 'tangible.config.js')
 
   /**
    * [GitHub default environment variables](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables)
    */
 
   const {
-    GITHUB_REPOSITORY: repoFullName, // tangible/example-plugin
-    GITHUB_REF_TYPE: eventType, // branch or tag
-    /**
-     * refs/heads/<branch_name>
-     * refs/tags/<tag_name>
-     * refs/pull/<pr_number>/merge
-     */
-    GITHUB_REF: gitRef,
-    // Branch or tag name
-    GITHUB_REF_NAME: gitRefName = 'unknown',
-  } = process.env
+    repoFullName,
+    eventType,
+    gitRef,
+    gitRefName
+  } = await getEventMeta()
 
   console.log('Repository', repoFullName)
   console.log('Event type', eventType)
   console.log('Git ref', gitRef)
 
+  if (!await fs.exists(configPath)) {
+    console.log('Config file not found', configPath)
+    console.log('Skip zip archive release')
+    return
+  }
+
   // Source zip file
 
-  const config = (await import('../../tangible.config.js')).default
+  const config = (await import(configPath)).default
 
   const zipFileName = `${config.archive.root}.zip`
   const sourceZipPath = path.join(publishPath, zipFileName)
@@ -83,7 +86,6 @@ async function main() {
   // Main/master branch
 
   if (branch === 'main' || branch === 'master') {
-
     console.log('Release preview on main/master branch')
 
     await writeRelease(`# Release preview`)
@@ -106,13 +108,13 @@ async function main() {
 
   await writeRelease(`# Branch preview ${branch}`)
 
-  const targetZipPath = sourceZipPath.replace('.zip', `-${
-    slugify(branch)
-  }-latest.zip`)
+  const targetZipPath = sourceZipPath.replace(
+    '.zip',
+    `-${slugify(branch)}-latest.zip`,
+  )
 
   console.log('Target zip file', targetZipPath)
   await fs.rename(sourceZipPath, targetZipPath)
-
 }
 
 function slugify(str: string) {
@@ -123,7 +125,7 @@ function slugify(str: string) {
     .toLowerCase() // convert to lowercase
     .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
     .replace(/\s+/g, '-') // replace spaces with hyphens
-    .replace(/-+/g, '-'); // remove consecutive hyphens
+    .replace(/-+/g, '-') // remove consecutive hyphens
 }
 
 main()
