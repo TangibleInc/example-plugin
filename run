@@ -69,6 +69,9 @@ main() {
       fi
     fi
 
+    # Clean up slug: alphanumeric and dash only
+    PROJECT_SLUG=${PROJECT_SLUG//[^0-9A-Za-z\-]/-}
+
     echo -e "\n..Using project slug \"$PROJECT_SLUG\"\n"
 
   fi
@@ -94,19 +97,20 @@ main() {
   fi
 
   local ZIP_FILE_CREATED
-  local ARCHIVE_FOLDER_NAME
+  local ARCHIVE_FOLDER_NAME=$PROJECT_SLUG
+  local HAS_ARCHIVE
 
   if [ -f package.json ]; then
 
     echo -e "\n..Installing NPM dependencies\n"
     npm install
 
-    ARCHIVE_FOLDER_NAME=$(node -e "let config = {}; try { config = (await import('./build/tangible.config.js')).default } catch (e) {}; console.log((config && config.archive && config.archive.root) || '')")
+    HAS_ARCHIVE=$(node -e "const pkg = require('./build/package.json'); console.log((pkg && pkg.scripts && pkg.scripts.archive) || '')")
 
-    if [ ! -z "$ARCHIVE_FOLDER_NAME" ]; then
+    if [ ! -z "$HAS_ARCHIVE" ]; then
       echo -e "\n..Creating zip archive: $ARCHIVE_FOLDER_NAME \n"
       npm run archive
-      ZIP_FILE_CREATED=${ARCHIVE_FOLDER_NAME}.zip
+      ZIP_FILE_CREATED=$(pwd)/publish/${ARCHIVE_FOLDER_NAME}.zip
     fi
   fi
 
@@ -149,11 +153,9 @@ main() {
 
   if [ ! -z $ZIP_FILE_CREATED ]; then
 
-    local SOURCE_ZIP="$PROJECT_SLUG"/publish/"$ZIP_FILE_CREATED"
+    echo -e "\n..Rename zip archive\nSource: $ZIP_FILE_CREATED\nTarget: $ZIP_FILE\n"
 
-    echo -e "\n..Rename zip archive\nSource: \nTarget: $ZIP_FILE\n"
-
-    mv "$SOURCE_ZIP" "$ZIP_FILE"
+    mv "$ZIP_FILE_CREATED" "$ZIP_FILE"
 
   else
 
