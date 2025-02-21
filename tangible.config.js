@@ -25,7 +25,7 @@ export default {
     '*.{php,js,json}'
   ],
   archive: {
-    root: 'tangible-example-plugin',
+    root: 'example-plugin',
     src: [
       '*.php',
       'assets/**',
@@ -33,14 +33,21 @@ export default {
       'vendor/tangible/**',
       'readme.txt'
     ],
-    dest: 'publish/tangible-example-plugin.zip',
+    dest: 'publish/example-plugin.zip',
     exclude: [
       'assets/src',
+      'docs',
+      'vendor/tangible/*/vendor',
+      'vendor/tangible-dev/',
+      '.git',
+      '**/artifacts',
+      '**/publish',
+      '**/node_modules',
       '**/tests',
       '**/*.scss',
       '**/*.jsx',
       '**/*.ts',
-      '**/*.tsx'
+      '**/*.tsx',
     ],
   },
   /**

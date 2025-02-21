@@ -11,7 +11,7 @@ Description of example plugin
 
 == Description ==
 
-Testing 123
+Description of example plugin
 
 == Installation ==
 
@@ -19,8 +19,8 @@ Testing 123
 
 == Changelog ==
 
-= 0.0.5 =
+= 0.1.0 =
 
-Release Date: 2024-01-01
+Release Date: 2025-01-01
 
 - Initial release
