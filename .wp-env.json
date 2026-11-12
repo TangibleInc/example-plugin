@@ -8,5 +8,7 @@
     "WP_DEBUG_DISPLAY": false
   },
   "mappings": {
-  }
+  },
+  "port": 8888,
+  "testsPort": 8889
 }
